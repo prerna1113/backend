@@ -1,13 +1,22 @@
 
 
 const express =require ('express');
+const fs = require('fs/promises')
+
+async function getAllEmployes(){
+    const data= await fs.readFile('./employe.json',{
+        encoding:'utf-8'
+    })
+    return JSON.parse(data);
+}
+
+
 
 const app= express();
 
 app.get('/employee',(req,res)=>{
     
 
-    return res.send("Hello World!");
 })
 
 
