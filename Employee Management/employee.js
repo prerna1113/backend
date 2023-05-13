@@ -1,3 +1,4 @@
+const { error } = require('console');
 const fs = require('fs/promises')
 
 async function getAllEmployees(){
@@ -43,14 +44,15 @@ async function addEmployee(data){
 
 }
 
-async function updateEmployeeById(data,id){
+async function updateEmployeeById(id,data){
     const employees = await getAllEmployees()
 
     let index =-1;
+
     let i=0;
     for(const employee of employees){
 
-        if(employee.id===id){
+        if(employee.id==id){
             index=i;
             break;
 
@@ -58,11 +60,12 @@ async function updateEmployeeById(data,id){
         i++;
 
     }
-    if(index==-1){
-        throw new Error("Employee does not exist");
+    if(index == -1){
+        console.log(error);
     }
     else{
-        const employee = employees[index];
+
+        let employee = employees[index];
 
         employee={
             ...employee,
@@ -83,7 +86,7 @@ async function deleteById(id){
     let i=0;
     for(const employee of employees){
 
-        if(employee.id===id){
+        if(employee.id==id){
             index=i;
             break;
 
