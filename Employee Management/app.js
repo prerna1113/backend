@@ -1,20 +1,28 @@
 
 const express =require ('express');
-const { getAllEmployes, addEmployee } = require('./employee');
+const {  addEmployee, getAllEmployees } = require('./employee');
 
 const app= express();
+app.use(express.json());
 
-app.get('/employee',async(req,res)=>{
-    const employee=await getAllEmployes();
+app.get('/employees',async(req,res)=>{
+    try{
+        const employees=await getAllEmployees();
 
     return res.send({
-        data: employee
+        data: employees
     })
+    }catch(err){
+        console.error(err.message);
+        return res.status(500).send({
+            message:"Unexpected error"
+        })
+    }
     
 
 })
 
-app.post('./employee',async(req,res)=>{
+app.post('/employees',async(req,res)=>{
     try{
         const employee=await addEmployee(req.body);
 

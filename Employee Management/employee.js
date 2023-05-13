@@ -1,6 +1,6 @@
 const fs = require('fs/promises')
 
-async function getAllEmployes(){
+async function getAllEmployees(){
     const data= await fs.readFile('./employe.json',{
         encoding:'utf-8'
     })
@@ -8,7 +8,8 @@ async function getAllEmployes(){
 }
 
 async function updateEmployee(employees){
-    const data = JSON.stringify(employees,null,4)
+    const data = JSON.stringify(employees,null,5)
+
     await fs.writeFile('./employe.json',data,{
         encoding:'utf-8'
     })
@@ -16,23 +17,33 @@ async function updateEmployee(employees){
 }
 
 async function addEmployee(data){
-    const employees = getAllEmployes()
-    let maxid=-1;
+    const employees = await getAllEmployees()
+
+    var maxId = 0;
+    
    for(const employee of employees){
-    if(employee.id >maxid){
-        maxid=employee.id;
+    if(employee.id > maxId){
+        
+      maxId = employee.id;
+        
     }
    }
 
-   const newEmployee={
+   const newEmployee = {
     ...data,
-    id:maxid+1,
+    id: maxId + 1 
+    
+    
    }
-   employees.push(newEmployee);
+   employees.push(newEmployee)
+
+   await updateEmployee(employees);
+   
+   return newEmployee;
 
 }
 
 module.exports={
-    getAllEmployes,
+    getAllEmployees,
     addEmployee,
 }
