@@ -43,7 +43,70 @@ async function addEmployee(data){
 
 }
 
+async function updateEmployeeById(data,id){
+    const employees = await getAllEmployees()
+
+    let index =-1;
+    let i=0;
+    for(const employee of employees){
+
+        if(employee.id===id){
+            index=i;
+            break;
+
+        }
+        i++;
+
+    }
+    if(index==-1){
+        throw new Error("Employee does not exist");
+    }
+    else{
+        const employee = employees[index];
+
+        employee={
+            ...employee,
+            ...data,
+            id:employee.id
+
+        }
+        employees[index]=employee;
+        await updateEmployee(employees)
+        return employee;
+    }
+}
+
+async function deleteById(id){
+    const employees = await getAllEmployees()
+
+    let index =-1;
+    let i=0;
+    for(const employee of employees){
+
+        if(employee.id===id){
+            index=i;
+            break;
+
+        }
+        i++;
+
+    }
+    if(index==-1){
+        throw new Error("Employee does not exist");
+    }
+    else{
+      const deletedEmployees= employees.splice(index,1);
+
+       
+        await updateEmployee(employees)
+        return deletedEmployees[0];
+    }
+
+}
+
 module.exports={
     getAllEmployees,
     addEmployee,
+    updateEmployeeById,
+    deleteById
 }
